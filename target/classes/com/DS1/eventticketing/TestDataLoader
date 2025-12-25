@@ -1,0 +1,48 @@
+package com.DS1.eventticketing;
+
+import com.DS1.eventticketing.model.*;
+import com.DS1.eventticketing.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+
+@Component
+public class TestDataLoader implements CommandLineRunner {
+    
+    @Autowired private UserService userService;
+    @Autowired private VenueService venueService;
+    @Autowired private EventService eventService;
+    @Autowired private TicketService ticketService;
+    
+    @Override
+    public void run(String... args) {
+        // Create sample users
+        User user1 = new User(null, "John Doe", "john@example.com", null);
+        User user2 = new User(null, "Jane Smith", "jane@example.com", null);
+        userService.createUser(user1);
+        userService.createUser(user2);
+        
+        // Create sample venues
+        Venue venue1 = new Venue(null, "Concert Hall", "123 Music Street", 1000, null);
+        Venue venue2 = new Venue(null, "Theater Royal", "456 Drama Avenue", 500, null);
+        venueService.createVenue(venue1);
+        venueService.createVenue(venue2);
+        
+        // Create sample events
+        Event event1 = new Event(null, "Rock Concert", 
+            LocalDate.now().plusDays(30), 75.0, venue1, null);
+        Event event2 = new Event(null, "Broadway Show", 
+            LocalDate.now().plusDays(15), 120.0, venue2, null);
+        eventService.createEvent(event1);
+        eventService.createEvent(event2);
+        
+        // Create sample tickets
+        ticketService.createTicket(1L, 1L, 2);
+        ticketService.createTicket(2L, 1L, 1);
+        ticketService.createTicket(1L, 2L, 4);
+        
+        System.out.println("✅ Test data loaded successfully!");
+    }
+}
